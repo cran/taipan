@@ -1,11 +1,11 @@
-#' buildTaipan
+#' Build a taipan application
 #'
 #' This function produces all necessary files for a shiny app.
 #' It requires a list of questions to ask users, the location of the images to
 #' display and the directory for the folder of shiny app files.
 #' Changes can be made to the appearance by altering the css in the folder.
 #'
-#' @param questions a taipan Questions list of scene and selection questions
+#' @param questions a `taipanQuestions` list of scene and selection questions
 #' @param images a vector of image locations, can be local or URLs
 #' @param appdir location to export the completed app
 #' @param launch launch the app from the new directory after build is completed
@@ -21,37 +21,37 @@
 #' library(shiny)
 #'
 #' questions <- taipanQuestions(
-#'   scene = div(radioButtons("graphic", label = ("2D Graphic"),
+#'   scene = div(radioButtons("graphic", label = "2D Graphic",
 #'                            choices = list("Live image", "2D Graphic")),
-#'               radioButtons("bg", label = ("Background"),
+#'               radioButtons("bg", label = "Background",
 #'                            choices = list("Crowd",
 #'                                           "Court", "Logo wall", "Not applicable")),
-#'               radioButtons("person", label = ("Detectable Person"),
-#'                            choices = list("Yes", "No"), selected = "Yes"),
-#'               radioButtons("shotangle", label = ("Shot angle"),
+#'               radioButtons("person", label = "Detectable Person",
+#'                            choices = list("Yes", "No")),
+#'               radioButtons("shotangle", label = "Shot angle",
 #'                            choices = list("Level with players",
 #'                                           "Birds eye",
 #'                                           "Upward angle")),
-#'               radioButtons("situation", label = ("Situation"),
+#'               radioButtons("situation", label = "Situation",
 #'                            choices = list("Court in play",
 #'                                           "Court player close-up",
 #'                                           "Court close-up not player",
 #'                                           "Crowd",
 #'                                           "Off court close up of player",
 #'                                           "Transition"))),
-#'   selection = div(radioButtons("detect", label = ("Detect Face"),
+#'   selection = div(radioButtons("detect", label = "Detect Face",
 #'                                choices = list("Player" ,
 #'                                               "Other staff on court", "Fan", "None")),
-#'                   radioButtons("obscured", label = ("Face obscured"),
-#'                                choices = list("Yes", "No"), selected = "No"),
-#'                   radioButtons("lighting", label = ("Lighting"),
+#'                   radioButtons("obscured", label = "Face obscured",
+#'                                choices = list("Yes", "No")),
+#'                   radioButtons("lighting", label = "Lighting",
 #'                                choices = list("Direct sunlight", "Shaded", "Partially shaded")),
-#'                   radioButtons("headangle", label = ("Head angle"),
+#'                   radioButtons("headangle", label = "Head angle",
 #'                                choices = list("Front on", "Back of head",
 #'                                               "Profile", "Other")),
-#'                   radioButtons("glasses", label = ("Glasses"),
-#'                                choices = list("Yes", "No"), selected = "No"),
-#'                   radioButtons("visorhat", label = ("Visor/hat"),
+#'                   radioButtons("glasses", label = "Glasses",
+#'                                choices = list("Yes", "No")),
+#'                   radioButtons("visorhat", label = "Visor/hat",
 #'                                choices = list("Yes", "No")))
 #' )
 #'
@@ -77,7 +77,6 @@
 #' @importFrom tools file_ext
 #'
 #' @export
-
 buildTaipan <- function(questions, images, appdir, launch = TRUE, overwrite = FALSE, skip_check = FALSE, ext_restricted = TRUE){
   # images <- tools::file_path_as_absolute(images)
   if(!inherits(questions, "taipanQuestions")){
@@ -110,6 +109,7 @@ buildTaipan <- function(questions, images, appdir, launch = TRUE, overwrite = FA
   file.copy(file.path(system.file(package="taipan"), "app", app_files), appdir, recursive = TRUE)
 
   # SAVE QUESTIONS
+  dir.create(file.path(appdir, "data"))
   saveRDS(questions, file = file.path(appdir, "data", "questions.Rds"))
 
 
@@ -126,8 +126,10 @@ buildTaipan <- function(questions, images, appdir, launch = TRUE, overwrite = FA
       message(message)
       images  <- images[valid_ext] #only keep valid image extensions
     }
+  }
 
   # CONSTRUCT IMAGE DIR
+  dir.create(file.path(appdir, "www", "app_images"))
   if(any(dirs <- dir.exists(images))){
     images <- c(list.files(images[dirs], full.names = TRUE, recursive = TRUE), images[!dirs])
   }
@@ -142,10 +144,6 @@ buildTaipan <- function(questions, images, appdir, launch = TRUE, overwrite = FA
     }
     Map(download.file, url = images[!img_success], mode = "wb", method = method, destfile = file.path(appdir, "www", "app_images", basename(images[!img_success])))
   }
-
-
-  }
-
 
   cat(paste("The app has been saved in", appdir))
   # LAUNCH APP

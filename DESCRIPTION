@@ -1,5 +1,5 @@
 Package: taipan
-Version: 0.1.1
+Version: 0.1.2
 Title: Tool for Annotating Images in Preparation for Analysis
 Authors@R: c(person("Stephanie", "Kobakian", email = "stephanie.kobakian@gmail.com", role = c("aut", "cre")),
              person("Mitchell", "O'Hara-Wild", email = "mail@mitchelloharawild.com", role = c("aut")))
@@ -12,19 +12,20 @@ Description: A tool to help create shiny apps for selecting and annotating
     detection purposes.
 Depends: R (>= 3.2.0)
 Imports: shiny, utils
-Suggests: testthat, knitr, rmarkdown, tidyverse
-URL: https://github.com/srkob1/taipan
-BugReports: https://github.com/srkob1/taipan/issues
-License: MIT + file LICENSE
+Suggests: testthat, knitr, rmarkdown, tidyverse, ggplot2, purrr,
+        shinydashboard
+URL: https://github.com/srkobakian/taipan
+BugReports: https://github.com/srkobakian/taipan/issues
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
 RoxygenNote: 6.1.0
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2018-09-12 03:11:56 UTC; steff
+Packaged: 2018-09-27 02:17:07 UTC; steff
 Author: Stephanie Kobakian [aut, cre],
   Mitchell O'Hara-Wild [aut]
 Maintainer: Stephanie Kobakian <stephanie.kobakian@gmail.com>
 Repository: CRAN
-Date/Publication: 2018-09-19 15:10:03 UTC
+Date/Publication: 2018-09-27 04:50:03 UTC
